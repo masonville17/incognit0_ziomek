@@ -1,4 +1,14 @@
 #!/bin/bash
+set -e
+echo "Checking SDK installation..."
+echo "ANDROID_HOME: $ANDROID_HOME"
+echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
+set -e
+
+if [ ! -f "/root/.Xauthority" ]; then
+    touch /root/.Xauthority
+    echo "Created missing /root/.Xauthority"
+fi
 
 echo "What in the world is flying past my shoulder? Could it be? It's ziomek version $ZIOMEK_VERSION!"
 initial_ipv4=$(ip -4 a show scope global | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | head -n 1)
@@ -39,34 +49,30 @@ fi
 mkdir -p ~/.vnc
 echo "${VNC_PASSWORD:-password}" | vncpasswd -f > ~/.vnc/passwd
 chmod 600 ~/.vnc/passwd
+export DISPLAY=:1
 tightvncserver :1 &
 vnc_pid=$!
 
 echo "Checking AVD directory at $ANDROID_AVD_HOME:"
-ls -l $ANDROID_AVD_HOME
 
-# Ensure AVD exists
-if [ ! -f "$ANDROID_AVD_HOME/${AVD_DEVICE}.ini" ]; then
-    echo "AVD ${AVD_DEVICE} not found. Creating AVD..."
+if [ ! -f "$ANDROID_AVD_HOME/${AVD_DEVICE}.ini" ]; then \
+    echo "AVD ${AVD_DEVICE} not found. Creating AVD..."; \
     /opt/android-sdk/cmdline-tools/latest/bin/avdmanager create avd \
         --name "${AVD_DEVICE}" \
         --package "system-images;android-30;google_apis_playstore;x86" \
         --device "pixel_4" \
-        --force
+        --force; \
 fi
 
-# Launch emulator
-echo "Launching emulator..."
-DISPLAY=:1 /opt/android-sdk/emulator/emulator \
+DISPLAY=:1 $ANDROID_HOME/emulator/emulator \
     -avd "${AVD_DEVICE}" \
-    -gpu "${GPU_TARGET}" \
+    -${GPU_TARGET:+gpu "${GPU_TARGET}"} \
     -skin "${EMULATOR_RESOLUTION}" \
-    -density "${EMULATOR_DENSITY}" \
     -cores "${CPU_CORES}" \
     -memory "${RAM_SIZE}" \
     -partition-size "${DISK_SIZE}" \
     -no-snapshot \
-    -${ENABLE_AUDIO:+audio} \
+    -${ENABLE_AUDIO:+audio none} \
     -network-speed "${NETWORK_SPEED}" \
     -no-window -verbose &
 emulator_pid=$!
