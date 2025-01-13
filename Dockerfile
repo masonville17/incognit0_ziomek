@@ -23,7 +23,10 @@ ENV NETWORK_SPEED=${NETWORK_SPEED}
 
 # VNC and Timezone.
 ENV VNC_PASSWORD=${VNC_PASSWORD}
-ENV TZ=Europe/Warsaw
+ARG TZ="$AVD_DEVICE"
+ENV TZ=${AVD_DEVICE}
+ENV ANDROID_HOME=/opt/android-sdk
+ENV PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
 
 # Install dependencies
 RUN DEBIAN_FRONTEND=noninteractive \
@@ -34,34 +37,42 @@ RUN DEBIAN_FRONTEND=noninteractive \
             libvirt-clients \
             unzip \
             wget \
-            openjdk-11-jdk \
+            bash \
             xvfb \
-            tightvncserver && mkdir /opt/android-sdk && cd /opt/android-sdk && \
-        wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip && \
-        unzip commandlinetools-linux-8512546_latest.zip -d /opt/android-sdk && \
-        rm commandlinetools-linux-8512546_latest.zip && \
-            yes | /opt/android-sdk/cmdline-tools/bin/sdkmanager --install "platform-tools" "emulator" "system-images;android-30;google_apis;x86_64" && \
-            /opt/android-sdk/cmdline-tools/bin/sdkmanager --licenses && \
-                API_LEVEL=$(echo $AVD_DEVICE | awk -F_ '{print $NF}') && \
-                SYSTEM_IMAGE=$(echo $AVD_DEVICE | awk -F_ '{print $(NF-1)}') && \
-                ARCH=$(echo $AVD_DEVICE | awk -F_ '{print $NF}') && \
-                yes | /opt/android-sdk/cmdline-tools/bin/sdkmanager --install \
-                "platform-tools" \
-                "emulator" \
-                "system-images;android-${API_LEVEL};${SYSTEM_IMAGE};${ARCH}" && \
-            --gpu "$GPU_TARGET" \
-            --skin "$EMULATOR_RESOLUTION" \
-            --density "$EMULATOR_DENSITY" \
-            --cores "$CPU_CORES" \
-            --memory "$RAM_SIZE" \
-            --partition-size "$DISK_SIZE" \
-            --no-snapshot \
-            --audio "$ENABLE_AUDIO" \
-            --network-speed "$NETWORK_SPEED"\
-            --no-window -verbose && \
-        rm -rf /var/lib/apt/lists/* && \
-        echo "Android components for incognit0_ziomek: $(/opt/android-sdk/cmdline-tools/bin/sdkmanager --list)"
-        # Set up VNC for GUI
+            tightvncserver \
+            openjdk-11-jdk \
+            openjdk-17-jdk \
+            wget \ 
+            wget \
+            unzip \
+            qemu-kvm \
+            libvirt-daemon-system \
+            libvirt-clients \
+            tightvncserver \
+            unzip && \
+    ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone
+# Install Android SDK components
+# Install Android SDK
+RUN mkdir -p /opt/android-sdk/cmdline-tools/latest && \
+    cd /opt/android-sdk && \
+    wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip && \
+    unzip commandlinetools-linux-10406996_latest.zip -d /opt/android-sdk/cmdline-tools/latest && \
+    mv /opt/android-sdk/cmdline-tools/latest/cmdline-tools/* /opt/android-sdk/cmdline-tools/latest/ && \
+    rm -rf /opt/android-sdk/cmdline-tools/latest/cmdline-tools && \
+    rm commandlinetools-linux-10406996_latest.zip && \
+    chmod +x /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager && \
+    echo "AVD_DEVICE: ${AVD_DEVICE}" && \
+    API_LEVEL=${AVD_DEVICE#*_API_} && \
+    echo "Parsed API_LEVEL: $API_LEVEL" && \
+    mkdir -p /home/runner/.android && touch /home/runner/.android/repositories.cfg && \
+    cd $ANDROID_HOME/cmdline-tools/latest/bin && \
+yes | ./sdkmanager --sdk_root=$ANDROID_HOME --licenses && \
+./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "system-images;android-30;google_apis_playstore;x86" && \
+./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "build-tools;31.0.0" && \
+./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "platform-tools" && \
+./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "emulator"
+# set up VNC
 RUN mkdir ~/.vnc && echo "$VNC_PASSWORD" | vncpasswd -f > ~/.vnc/passwd && chmod 600 ~/.vnc/passwd
 
 # Entrypoint script

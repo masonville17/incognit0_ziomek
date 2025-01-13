@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    env_file:
+      - .env
     environment:
       GPU_TARGET: swiftshader_indirect
       EMULATOR_RESOLUTION: 720x1280
