@@ -8,7 +8,7 @@ ARG EMULATOR_RESOLUTION=1080x1920
 ENV EMULATOR_RESOLUTION=${EMULATOR_RESOLUTION}
 ARG EMULATOR_DENSITY=420
 ENV EMULATOR_DENSITY=${EMULATOR_DENSITY}
-ARG AVD_DEVICE="$AVD_DEVICE"
+ARG AVD_DEVICE="Pixel_4_API_30_google_apis_playstore_x86_64"
 ENV AVD_DEVICE=${AVD_DEVICE}
 ARG CPU_CORES=2
 ENV CPU_CORES=${CPU_CORES}
@@ -31,6 +31,10 @@ ENV TZ=${AVD_DEVICE}
 ENV ANDROID_HOME=/opt/android-sdk
 ENV PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
 
+ENV ANDROID_AVD_HOME=/root/.android/avd
+ENV ANDROID_SDK_HOME=/root
+ENV USER=root
+ENV HOME=/root
 
 # Install dependencies
 # Install dependencies
@@ -42,12 +46,18 @@ RUN DEBIAN_FRONTEND=noninteractive \
             libvirt-clients \
             unzip \
             wget \
+            curl \
             bash \
             xvfb \
+            sudo \
+            procps \
             tightvncserver \
             openjdk-11-jdk \
             openjdk-17-jdk \
             wget \ 
+            dnsutils \
+            ca-certificates \
+            iptables \
             wget \
             unzip \
             openvpn \
@@ -77,7 +87,8 @@ yes | ./sdkmanager --sdk_root=$ANDROID_HOME --licenses && \
 ./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "system-images;android-30;google_apis_playstore;x86" && \
 ./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "build-tools;31.0.0" && \
 ./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "platform-tools" && \
-./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "emulator"
+./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "emulator" && \
+ls -la /home/runner/.android/*
 # set up VNC
 RUN mkdir ~/.vnc && echo "$VNC_PASSWORD" | vncpasswd -f > ~/.vnc/passwd && chmod 600 ~/.vnc/passwd
 

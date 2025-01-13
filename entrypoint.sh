@@ -30,7 +30,7 @@ else
     echo "VPN is disabled, it will be just a bit, but you'll be able to connect via initial ip $initial_ipv4"
     android_internet_ipv4=$initial_ipv4
     ip_addr
-    vpn_infos="Sorry sir, no VPN here!"
+    vpn_infos="Sorry sir or madam, no VPN here!"
     ip_addr=$initial_ipv4
 fi
 
@@ -42,7 +42,22 @@ chmod 600 ~/.vnc/passwd
 tightvncserver :1 &
 vnc_pid=$!
 
-DISPLAY=:1 cd $ANDROID_HOME/cmdline-tools/latest/bin && /opt/android-sdk/emulator/emulator \
+echo "Checking AVD directory at $ANDROID_AVD_HOME:"
+ls -l $ANDROID_AVD_HOME
+
+# Ensure AVD exists
+if [ ! -f "$ANDROID_AVD_HOME/${AVD_DEVICE}.ini" ]; then
+    echo "AVD ${AVD_DEVICE} not found. Creating AVD..."
+    /opt/android-sdk/cmdline-tools/latest/bin/avdmanager create avd \
+        --name "${AVD_DEVICE}" \
+        --package "system-images;android-30;google_apis_playstore;x86" \
+        --device "pixel_4" \
+        --force
+fi
+
+# Launch emulator
+echo "Launching emulator..."
+DISPLAY=:1 /opt/android-sdk/emulator/emulator \
     -avd "${AVD_DEVICE}" \
     -gpu "${GPU_TARGET}" \
     -skin "${EMULATOR_RESOLUTION}" \
@@ -66,7 +81,7 @@ while true; do
             vpn_infos="$(ps -f -p $vpn_pid) pid:$vpn_pid using $OVPN_FILE"
         fi
     else
-        vpn_infos="Sorry sir, no VPN here!"
+        vpn_infos="Sorry sir or madam, no VPN here!"
     fi
     # killswitch, vpn, emulator infos
     echo "NETWORK INFOS: local/vnc ip: $initial_ipv4, android-internet ip:$ip_addr"

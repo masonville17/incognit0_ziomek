@@ -13,7 +13,7 @@ services:
       GPU_TARGET: swiftshader_indirect
       EMULATOR_RESOLUTION: 720x1280
       EMULATOR_DENSITY: 240
-      AVD_DEVICE: Pixel_4_API_30_google_apis_x86_64
+      AVD_DEVICE: Pixel_4_API_30_google_apis_playstore_x86_64
       CPU_CORES: 4
       RAM_SIZE: 4096M
       DISK_SIZE: 32G
