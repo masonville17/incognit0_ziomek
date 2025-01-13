@@ -28,5 +28,5 @@ DISPLAY=:1 cd $ANDROID_HOME/cmdline-tools/latest/bin && /opt/android-sdk/emulato
     -network-speed "${NETWORK_SPEED}" \
     -no-window -verbose &
 
-# Keep the container running
+echo "connect with: vncviewer ipv4:1"
 tail -f /dev/null    
