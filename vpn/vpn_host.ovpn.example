@@ -1,17 +1,14 @@
 client
 dev tun
 proto udp
-remote ziomek.vpn.com 443
+remote sub.provider.tld 443
 resolv-retry infinite
 nobind
 persist-key
 persist-tun
 persist-remote-ip
-ca ca.ipvanish.com.crt
-verify-x509-name waw-c01.ipvanish.com name
-auth-user-pass
-myusername
-mypassword
+ca ca.provider.tld.crt
+verify-x509-name sub.provider.tld name
 comp-lzo
 verb 3
 auth SHA256

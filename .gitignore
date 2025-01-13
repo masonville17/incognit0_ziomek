@@ -5,3 +5,7 @@ environment
 .env.remote
 incognito_data/*
 ovpn_host.ovpn
+*.ovpn
+vpn/*
+!vpn/*.example
+vpn/passfile

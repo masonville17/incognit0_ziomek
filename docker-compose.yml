@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     environment:
-      USE_VPN: 0 # optional, defaults to 0 if you are managing this yourself. If set to 1, you'll need to specify your ovpn file and any related ca certs or client keys in the designatec volume/folder
+      USE_VPN: 1 # optional, defaults to 0 if you are managing this yourself. If set to 1, you'll need to specify your ovpn file and any related ca certs or client keys in the designatec volume/folder
       GPU_TARGET: swiftshader_indirect
       EMULATOR_RESOLUTION: 720x1280
       EMULATOR_DENSITY: 240
@@ -23,7 +23,7 @@ services:
     volumes:
       - ./incognito_data/avd-data:/root/.android/avd
       - ./incognito_data/device-data:/data
-      - ./vpn:/vpn} # optional, needed if using vpn mode, howerver.
+      - ./vpn:/vpn # optional, needed if using vpn mode, howerver.
     devices:
       - "/dev/kvm:/dev/kvm"  # Enable KVM for hardware acceleration (optional)
       - "/dev/net/tun:/dev/net/tun" # Tunnel interface binding to container host for VPN

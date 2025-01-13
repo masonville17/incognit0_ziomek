@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM ubuntu:24.04
 LABEL maintainer="Mason Stelter"
 ENV ZIOMEK_VERSION="0.1.1"
 ENV DEBIAN_FRONTEND=noninteractive
@@ -33,36 +33,34 @@ ENV PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PA
 
 
 # Install dependencies
-RUN echo "deb http://deb.debian.org/debian bookworm main contrib non-free" > /etc/apt/sources.list && \
-    DEBIAN_FRONTEND=noninteractive \
-    apt-get update && apt-get install -y \
-        adb \
-        qemu-kvm \
-        libvirt-daemon-system \
-        libvirt-clients \
-        bash \
-        xvfb \
-        tigervnc-standalone-server \
-        openjdk-11-jdk \
-        openjdk-17-jdk \
-        openvpn \
-        sudo \
-        procps \
-        ca-certificates \
-        vim \
-        iproute2 \
-        wget \
-        iptables \
-        dnsutils \
-        net-tools \
-        unzip && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+# Install dependencies
+RUN DEBIAN_FRONTEND=noninteractive \
+        apt-get update && apt-get install -y \
+            adb \
+            qemu-kvm \
+            libvirt-daemon-system \
+            libvirt-clients \
+            unzip \
+            wget \
+            bash \
+            xvfb \
+            tightvncserver \
+            openjdk-11-jdk \
+            openjdk-17-jdk \
+            wget \ 
+            wget \
+            unzip \
+            qemu-kvm \
+            libvirt-daemon-system \
+            libvirt-clients \
+            tightvncserver \
+            unzip && \
     ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
-    echo $TZ > /etc/timezone
+    echo $TZ > /etc/timezone && \
+    chmod 600 /vpn/passfile
 # Install Android SDK components
 # Install Android SDK
 RUN mkdir -p /opt/android-sdk/cmdline-tools/latest && \
-    mkdir -p etc/vpn/ && \
     cd /opt/android-sdk && \
     wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip && \
     unzip commandlinetools-linux-10406996_latest.zip -d /opt/android-sdk/cmdline-tools/latest && \
