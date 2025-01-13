@@ -11,6 +11,7 @@ if [[ "${USE_VPN}" -eq 1 ]]; then
     iptables -A OUTPUT -o tun0 -p tcp --dport "$5901" -j DROP
     iptables -t nat -A POSTROUTING -o tun0 -j MASQUERADE
     OVPN_FILE=$(find /vpn -name "*.ovpn" | shuf -n 1)
+    chmod 600 /vpn/passfile
     echo "VPN is enabled, dont try to connect via $initial_ipv4... You're going to the moon! Attempting VPN connection with $OVPN_FILE."
     cd /vpn && openvpn --config "${OVPN_FILE}" --auth-user-pass /vpn/passfile & 
     vpn_pid=$!

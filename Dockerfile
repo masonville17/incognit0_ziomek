@@ -50,14 +50,14 @@ RUN DEBIAN_FRONTEND=noninteractive \
             wget \ 
             wget \
             unzip \
+            openvpn \
             qemu-kvm \
             libvirt-daemon-system \
             libvirt-clients \
             tightvncserver \
             unzip && \
     ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
-    echo $TZ > /etc/timezone && \
-    chmod 600 /vpn/passfile
+    echo $TZ > /etc/timezone
 # Install Android SDK components
 # Install Android SDK
 RUN mkdir -p /opt/android-sdk/cmdline-tools/latest && \
