@@ -1,7 +1,8 @@
 services:
   incognit0_ziomek:
     container_name: incognit0_ziomek
-    # network_mode: "host"   
+    cap_add:
+      - NET_ADMIN 
     build:
       context: .
       dockerfile: Dockerfile
@@ -19,12 +20,11 @@ services:
       ENABLE_AUDIO: true
       OVPN_FILE: vpn_host.ovpn
       NETWORK_SPEED: full
-    ports:
-      - "5901:5901"  # VNC access
     volumes:
       - ./incognito_data/avd-data:/root/.android/avd
       - ./incognito_data/device-data:/data
-      - ./vpn_host.ovpn:/etc/vpn/vpn_host.ovpn} # optional, needed if using vpn mode, howerver.
+      - ./vpn:/vpn} # optional, needed if using vpn mode, howerver.
     devices:
       - "/dev/kvm:/dev/kvm"  # Enable KVM for hardware acceleration (optional)
+      - "/dev/net/tun:/dev/net/tun" # Tunnel interface binding to container host for VPN
     privileged: true

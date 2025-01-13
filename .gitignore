@@ -4,3 +4,4 @@ environment
 .env.local
 .env.remote
 incognito_data/*
+ovpn_host.ovpn

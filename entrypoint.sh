@@ -49,20 +49,26 @@ DISPLAY=:1 cd $ANDROID_HOME/cmdline-tools/latest/bin && /opt/android-sdk/emulato
     -${ENABLE_AUDIO:+audio} \
     -network-speed "${NETWORK_SPEED}" \
     -no-window -verbose &
+emulator_pid=$!
 
 while true; do
     ip_addr=$(curl -s https://ipinfo.io/ip)
     if [[ "${USE_VPN}" -eq 1 ]]; then
         if ! ip a show tun0 up > /dev/null 2>&1; then
-            echo "VPN INFOS: connection (pid:$vpn_pid) has stopped becoming viable. were going to exit now. okay?"
+            echo "VPN INFOS: connection (pid:$vpn_pid) has stopped becoming viable. were going to exit now. okay? $(ps -f -p $vpn_pid)"
             exit 1
         else
-            vpn_infos=$(ps -f -p $vpn_pid)
-            echo "VPN INFOS: connected with split tunnel. Local/VNC ipv4 is: $initial_ipv4, android-internet access is now ipv4:$ip_addr"
+            vpn_infos="$(ps -f -p $vpn_pid) pid:$vpn_pid"
         fi
+    else
+        vpn_infos="Sorry sir, no VPN here!"
     fi
-    echo "VNC server is running on $initial_ipv4:5901, android emulator is running on $initial_ipv4:5901, android-internet access is now ipv4:$ip_addr"
-    echo "Sleeping for 10 and then check again..."
+    # killswitch, vpn, emulator infos
+    echo "NETWORK INFOS: local/vnc ip: $initial_ipv4, android-internet ip:$ip_addr"
+    echo "VPN INFOS: $vpn_infos"
+    echo "VNC INFOS: $(ps -f -p $vnc_pid) pid:$vnc_pid"
+    echo "ANDROID INFOS: $(ps -f -p $emulator_pid) pid:$emulator_pid"
+    echo "KILLSWITCH INFOS: Sleeping for 10 and then check again..."
     sleep 600
 done
 trap "kill $vpn_pid" EXIT

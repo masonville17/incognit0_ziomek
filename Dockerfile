@@ -62,6 +62,7 @@ RUN echo "deb http://deb.debian.org/debian bookworm main contrib non-free" > /et
 # Install Android SDK components
 # Install Android SDK
 RUN mkdir -p /opt/android-sdk/cmdline-tools/latest && \
+    mkdir -p etc/vpn/ && \
     cd /opt/android-sdk && \
     wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip && \
     unzip commandlinetools-linux-10406996_latest.zip -d /opt/android-sdk/cmdline-tools/latest && \
