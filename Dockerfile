@@ -20,6 +20,7 @@ ARG ENABLE_HARDWARE_KEYBOARD=true
 ENV ENABLE_HARDWARE_KEYBOARD=${ENABLE_HARDWARE_KEYBOARD}
 ARG NETWORK_SPEED=full
 ENV NETWORK_SPEED=${NETWORK_SPEED}
+ENV VNC_PASSWORD=password
 
 # VNC and Timezone.
 ENV VNC_PASSWORD=${VNC_PASSWORD}
@@ -27,6 +28,7 @@ ARG TZ="$AVD_DEVICE"
 ENV TZ=${AVD_DEVICE}
 ENV ANDROID_HOME=/opt/android-sdk
 ENV PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+
 
 # Install dependencies
 RUN DEBIAN_FRONTEND=noninteractive \
@@ -77,7 +79,6 @@ RUN mkdir ~/.vnc && echo "$VNC_PASSWORD" | vncpasswd -f > ~/.vnc/passwd && chmod
 
 # Entrypoint script
 WORKDIR ${ANDROID_HOME}/cmdline-tools/latest/bin
-COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
-
-ENTRYPOINT ["/bin/bash", "-c", "entrypoint.sh"]
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/entrypoint.sh"]

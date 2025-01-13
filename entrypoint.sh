@@ -1,5 +1,8 @@
 #!/bin/bash
 
+mkdir -p ~/.vnc
+echo "${VNC_PASSWORD:-password}" | vncpasswd -f > ~/.vnc/passwd
+chmod 600 ~/.vnc/passwd
 tightvncserver :1
 
 echo "Launching emulator with:"
@@ -22,4 +25,8 @@ DISPLAY=:1 cd $ANDROID_HOME/cmdline-tools/latest/bin && /opt/android-sdk/emulato
     -partition-size "${DISK_SIZE}" \
     -no-snapshot \
     -${ENABLE_AUDIO:+audio} \
-    -network-speed "${NETWORK_SPEED}"
+    -network-speed "${NETWORK_SPEED}" \
+    -no-window -verbose &
+
+# Keep the container running
+tail -f /dev/null    
