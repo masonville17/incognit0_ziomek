@@ -76,17 +76,8 @@ yes | ./sdkmanager --sdk_root=$ANDROID_HOME --licenses && \
 RUN mkdir ~/.vnc && echo "$VNC_PASSWORD" | vncpasswd -f > ~/.vnc/passwd && chmod 600 ~/.vnc/passwd
 
 # Entrypoint script
-COPY entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint.sh
+WORKDIR ${ANDROID_HOME}/cmdline-tools/latest/bin
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
 
-ENTRYPOINT ["/opt/android-sdk/emulator/emulator", \
-            "-avd", "${AVD_DEVICE}", \
-            "-gpu", "${GPU_TARGET}", \
-            "-skin", "${EMULATOR_RESOLUTION}", \
-            "-density", "${EMULATOR_DENSITY}", \
-            "-cores", "${CPU_CORES}", \
-            "-memory", "${RAM_SIZE}", \
-            "-partition-size", "${DISK_SIZE}", \
-            "-no-snapshot", \
-            "-audio", "${ENABLE_AUDIO}", \
-            "-network-speed", "${NETWORK_SPEED}"]
+ENTRYPOINT ["/bin/bash", "-c", "entrypoint.sh"]

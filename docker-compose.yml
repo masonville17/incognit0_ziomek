@@ -1,7 +1,7 @@
 services:
   incognit0_ziomek:
     container_name: incognit0_ziomek
-    network_mode: "host"   
+    # network_mode: "host"   
     build:
       context: .
       dockerfile: Dockerfile

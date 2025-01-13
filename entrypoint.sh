@@ -12,7 +12,7 @@ echo "RAM_SIZE=${RAM_SIZE}"
 echo "DISK_SIZE=${DISK_SIZE}"
 echo "ENABLE_AUDIO=${ENABLE_AUDIO}"
 echo "NETWORK_SPEED=${NETWORK_SPEED}"
-DISPLAY=:1 /opt/android-sdk/emulator/emulator \
+DISPLAY=:1 cd $ANDROID_HOME/cmdline-tools/latest/bin && /opt/android-sdk/emulator/emulator \
     -avd "${AVD_DEVICE}" \
     -gpu "${GPU_TARGET}" \
     -skin "${EMULATOR_RESOLUTION}" \
