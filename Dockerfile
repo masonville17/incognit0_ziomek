@@ -1,5 +1,7 @@
-FROM ubuntu:24.04
-
+FROM debian:bookworm-slim
+LABEL maintainer="Mason Stelter"
+ENV ZIOMEK_VERSION="0.1.1"
+ENV DEBIAN_FRONTEND=noninteractive
 ARG GPU_TARGET=none
 ENV GPU_TARGET=${GPU_TARGET}
 ARG EMULATOR_RESOLUTION=1080x1920
@@ -37,23 +39,30 @@ RUN DEBIAN_FRONTEND=noninteractive \
             qemu-kvm \
             libvirt-daemon-system \
             libvirt-clients \
-            unzip \
-            wget \
             bash \
             xvfb \
             tightvncserver \
             openjdk-11-jdk \
             openjdk-17-jdk \
-            wget \ 
+            openvpn \
+            sudo \
+            procps \
+            ca-certificates \
+            vim \
+            iproute2 \
             wget \
+            iptables \
+            dnsutils \
+            net-tools \           
             unzip \
             qemu-kvm \
             libvirt-daemon-system \
             libvirt-clients \
-            tightvncserver \
-            unzip && \
+            tightvncserver && \
+        apt-get clean && rm -rf /var/lib/apt/lists/* && \
     ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ > /etc/timezone
+
 # Install Android SDK components
 # Install Android SDK
 RUN mkdir -p /opt/android-sdk/cmdline-tools/latest && \
