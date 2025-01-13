@@ -1,11 +1,12 @@
 services:
   incognit0_ziomek:
     container_name: incognit0_ziomek
+    image: masonville17/incognit0_ziomek:Pixel_4_API_30_playstore # exclude if building locally
     cap_add:
       - NET_ADMIN 
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build: Needed only if building locally
+    #   context: .
+    #   dockerfile: Dockerfile
     env_file:
       - .env
     environment:
@@ -28,3 +29,4 @@ services:
       - "/dev/kvm:/dev/kvm"  # Enable KVM for hardware acceleration (optional)
       - "/dev/net/tun:/dev/net/tun" # Tunnel interface binding to container host for VPN
     privileged: true
+    restart: always

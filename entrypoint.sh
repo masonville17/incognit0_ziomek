@@ -84,14 +84,13 @@ while true; do
             echo "VPN INFOS: connection (pid:$vpn_pid) via $OVPN_FILE has stopped becoming viable. were going to exit now. okay? $(ps -f -p $vpn_pid)"
             exit 1
         else
-            vpn_infos="$(ps -f -p $vpn_pid) pid:$vpn_pid using $OVPN_FILE"
+            echo "VPN INFOS: $(ps -f -p $vpn_pid) pid:$vpn_pid using $OVPN_FILE"
         fi
     else
-        vpn_infos="Sorry sir or madam, no VPN here!"
+        echo "VPN INFOS: Sorry sir or madam, no VPN here!"
     fi
     # killswitch, vpn, emulator infos
     echo "NETWORK INFOS: local/vnc ip: $initial_ipv4, android-internet ip:$ip_addr"
-    echo "VPN INFOS: $vpn_infos"
     echo "VNC INFOS: $(ps -f -p $vnc_pid) pid:$vnc_pid"
     echo "ANDROID INFOS: $(ps -f -p $emulator_pid) pid:$emulator_pid"
     echo "KILLSWITCH INFOS: Sleeping for 10 and then check again..."
