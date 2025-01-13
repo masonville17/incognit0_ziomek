@@ -2,14 +2,11 @@
 Cloud-Based Tiktok Ban Circumvention
 
 #### STATE: WIP
+TODO: Grab split-tunnel setup from i2pvanish plus, supernet plus repo or rewrite.
+TODO: make the split-tunneling conditional so that users can alternatively just set up on cloud host that is already in different country.
 
-<iframe width="560" height="315" 
-    src="https://www.youtube.com/embed/781yoclzkcg" 
-    title="incognit0_ziomek promotion" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-    allowfullscreen>
-</iframe>
+[incognit0_ziomek](https://www.youtube.com/shorts/781yoclzkcg)
+
 
 ### (ziomek translates directly to compatriot in Polish.)
 
