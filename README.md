@@ -1,13 +1,14 @@
 # incognit0_ziomek
 Cloud-Based Tiktok Ban Circumvention
 
-![incognit0_ziomek bird](media/incognit0_ziomek.png)
+[![incognit0_ziomek youtube](media/incognit0_ziomek.png)](https://www.youtube.com/shorts/781yoclzkcg)
+
 
 #### STATE: WIP
 TODO: Grab split-tunnel setup from i2pvanish plus, supernet plus repo or rewrite.
 TODO: make the split-tunneling conditional so that users can alternatively just set up on cloud host that is already in different country.
 
-[incognit0_ziomek](https://www.youtube.com/shorts/781yoclzkcg)
+
 
 
 ### (ziomek translates directly to compatriot in Polish.)
