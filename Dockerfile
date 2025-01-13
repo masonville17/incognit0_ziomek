@@ -33,36 +33,32 @@ ENV PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PA
 
 
 # Install dependencies
-RUN DEBIAN_FRONTEND=noninteractive \
-        apt-get update && apt-get install -y \
-            adb \
-            qemu-kvm \
-            libvirt-daemon-system \
-            libvirt-clients \
-            bash \
-            xvfb \
-            tightvncserver \
-            openjdk-11-jdk \
-            openjdk-17-jdk \
-            openvpn \
-            sudo \
-            procps \
-            ca-certificates \
-            vim \
-            iproute2 \
-            wget \
-            iptables \
-            dnsutils \
-            net-tools \           
-            unzip \
-            qemu-kvm \
-            libvirt-daemon-system \
-            libvirt-clients \
-            tightvncserver && \
-        apt-get clean && rm -rf /var/lib/apt/lists/* && \
+RUN echo "deb http://deb.debian.org/debian bookworm main contrib non-free" > /etc/apt/sources.list && \
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get update && apt-get install -y \
+        adb \
+        qemu-kvm \
+        libvirt-daemon-system \
+        libvirt-clients \
+        bash \
+        xvfb \
+        tigervnc-standalone-server \
+        openjdk-11-jdk \
+        openjdk-17-jdk \
+        openvpn \
+        sudo \
+        procps \
+        ca-certificates \
+        vim \
+        iproute2 \
+        wget \
+        iptables \
+        dnsutils \
+        net-tools \
+        unzip && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
     ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ > /etc/timezone
-
 # Install Android SDK components
 # Install Android SDK
 RUN mkdir -p /opt/android-sdk/cmdline-tools/latest && \

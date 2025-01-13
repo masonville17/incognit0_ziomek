@@ -9,7 +9,6 @@ services:
       - .env
     environment:
       USE_VPN: 0 # optional, defaults to 0 if you are managing this yourself. If set to 1, you'll need to specify your ovpn file and any related ca certs or client keys in the designatec volume/folder
-      OVPN_FILE: ${OVPN_FILE:-/etc/vpn/default.ovpn}
       GPU_TARGET: swiftshader_indirect
       EMULATOR_RESOLUTION: 720x1280
       EMULATOR_DENSITY: 240
@@ -18,13 +17,14 @@ services:
       RAM_SIZE: 4096M
       DISK_SIZE: 32G
       ENABLE_AUDIO: true
+      OVPN_FILE: vpn_host.ovpn
       NETWORK_SPEED: full
     ports:
       - "5901:5901"  # VNC access
     volumes:
       - ./incognito_data/avd-data:/root/.android/avd
       - ./incognito_data/device-data:/data
-      - ${OVPN_FILE}:/etc/vpn/vpn_host.ovpn} # optional, needed if using vpn mode, howerver.
+      - ./vpn_host.ovpn:/etc/vpn/vpn_host.ovpn} # optional, needed if using vpn mode, howerver.
     devices:
       - "/dev/kvm:/dev/kvm"  # Enable KVM for hardware acceleration (optional)
     privileged: true
