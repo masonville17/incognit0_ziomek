@@ -1,0 +1,25 @@
+services:
+  incognit0_ziomek:
+    container_name: incognit0_ziomek
+    network_mode: "host"   
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      GPU_TARGET: swiftshader_indirect
+      EMULATOR_RESOLUTION: 720x1280
+      EMULATOR_DENSITY: 240
+      AVD_DEVICE: Pixel_4_API_30
+      CPU_CORES: 4
+      RAM_SIZE: 4096M
+      DISK_SIZE: 32G
+      ENABLE_AUDIO: true
+      NETWORK_SPEED: full
+    ports:
+      - "5901:5901"  # VNC access
+    volumes:
+      - ./incognito_data/avd-data:/root/.android/avd
+      - ./incognito_data/device-data:/data    
+    devices:
+      - "/dev/kvm:/dev/kvm"  # Enable KVM for hardware acceleration (optional)
+    privileged: true

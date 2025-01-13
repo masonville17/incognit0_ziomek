@@ -1,0 +1,6 @@
+config.ovpn
+environment
+.env
+.env.local
+.env.remote
+incognito_data/*
