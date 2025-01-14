@@ -15,23 +15,15 @@
 ---
 Firstly, you'll need to make sure you have an up to date version of Docker and docker-compose installed.
 
-### if **cloning from git repo**
+###**cloning from git repo**
 ```
 git clone https://github.com/masonville17/incognit0_ziomek
 cd ./incognit0_ziomek
 ```
 
-### if **placing docker-compose.yml file manually**
-
-otherwise you'll just need the **```docker-compose.yml```** file in a project directory.
-```
-mkdir -p incognit0_ziomek/vpn && cd ./incognit0_ziomek
-wget https://raw.githubusercontent.com/masonville17/incognit0_ziomek/refs/heads/main/docker-compose.yml -o docker-compose.yml
-```
-
 ### Secrets/Vpn Configuration
 
-once you have your **```docker-compose.yml```** by either of the above means, you can edit as needed and then finish set-up by placing files containing:
+once you have your **```docker-compose.yml```**, you can edit as needed and then finish set-up by placing files containing:
 - **openvpn ```passfile```**
 - **openvpn ```configfile```**
 - **```.env``` file for your preferred VNC password** *(for accessing the virtualized Android host.)*
