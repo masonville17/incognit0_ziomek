@@ -1,27 +1,32 @@
 services:
   incognit0_ziomek:
     container_name: incognit0_ziomek
-    # network_mode: "host"   
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: masonville17/incognit0_ziomek:Pixel_4_API_30_playstore # exclude if building locally
+    cap_add:
+      - NET_ADMIN 
+    # build: Needed only if building locally
+    #   context: .
+    #   dockerfile: Dockerfile
     env_file:
       - .env
     environment:
+      USE_VPN: 1 # optional, defaults to 0 if you are managing this yourself. If set to 1, you'll need to specify your ovpn file and any related ca certs or client keys in the designatec volume/folder
       GPU_TARGET: swiftshader_indirect
       EMULATOR_RESOLUTION: 720x1280
       EMULATOR_DENSITY: 240
-      AVD_DEVICE: Pixel_4_API_30_google_apis_x86_64
+      AVD_DEVICE: Pixel_4_API_30_google_apis_playstore_x86_64
       CPU_CORES: 4
       RAM_SIZE: 4096M
       DISK_SIZE: 32G
       ENABLE_AUDIO: true
+      OVPN_FILE: vpn_host.ovpn
       NETWORK_SPEED: full
-    ports:
-      - "5901:5901"  # VNC access
     volumes:
       - ./incognito_data/avd-data:/root/.android/avd
-      - ./incognito_data/device-data:/data    
+      - ./incognito_data/device-data:/data
+      - ./vpn:/vpn # optional, needed if using vpn mode, howerver.
     devices:
       - "/dev/kvm:/dev/kvm"  # Enable KVM for hardware acceleration (optional)
+      - "/dev/net/tun:/dev/net/tun" # Tunnel interface binding to container host for VPN
     privileged: true
+    restart: always

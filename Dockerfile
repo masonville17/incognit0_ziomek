@@ -1,4 +1,18 @@
 FROM ubuntu:24.04
+LABEL maintainer="Mason Stelter"
+ENV ZIOMEK_VERSION="0.1.1"
+ENV DEBIAN_FRONTEND=noninteractive
+
+ENV USER=root
+ENV HOME=/root
+ARG AVD_DEVICE="Pixel_4_API_30_google_apis_playstore_x86_64"
+ENV AVD_DEVICE=${AVD_DEVICE}
+ENV ANDROID_HOME=/opt/android-sdk
+ENV PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+ENV ANDROID_AVD_HOME=/root/.android/avd
+ENV ANDROID_SDK_HOME=/root
+ENV ANDROID_SDK_ROOT=/opt/android-sdk
+
 
 ARG GPU_TARGET=none
 ENV GPU_TARGET=${GPU_TARGET}
@@ -6,8 +20,7 @@ ARG EMULATOR_RESOLUTION=1080x1920
 ENV EMULATOR_RESOLUTION=${EMULATOR_RESOLUTION}
 ARG EMULATOR_DENSITY=420
 ENV EMULATOR_DENSITY=${EMULATOR_DENSITY}
-ARG AVD_DEVICE="$AVD_DEVICE"
-ENV AVD_DEVICE=${AVD_DEVICE}
+
 ARG CPU_CORES=2
 ENV CPU_CORES=${CPU_CORES}
 ARG RAM_SIZE=2048M
@@ -26,10 +39,11 @@ ENV VNC_PASSWORD=password
 ENV VNC_PASSWORD=${VNC_PASSWORD}
 ARG TZ="$AVD_DEVICE"
 ENV TZ=${AVD_DEVICE}
-ENV ANDROID_HOME=/opt/android-sdk
-ENV PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
 
 
+# Install Android SDK components
+
+# Install dependencies
 # Install dependencies
 RUN DEBIAN_FRONTEND=noninteractive \
         apt-get update && apt-get install -y \
@@ -38,15 +52,23 @@ RUN DEBIAN_FRONTEND=noninteractive \
             libvirt-daemon-system \
             libvirt-clients \
             unzip \
+            xauth \
             wget \
+            curl \
             bash \
             xvfb \
+            sudo \
+            procps \
             tightvncserver \
             openjdk-11-jdk \
             openjdk-17-jdk \
             wget \ 
+            dnsutils \
+            ca-certificates \
+            iptables \
             wget \
             unzip \
+            openvpn \
             qemu-kvm \
             libvirt-daemon-system \
             libvirt-clients \
@@ -54,9 +76,10 @@ RUN DEBIAN_FRONTEND=noninteractive \
             unzip && \
     ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ > /etc/timezone
-# Install Android SDK components
-# Install Android SDK
-RUN mkdir -p /opt/android-sdk/cmdline-tools/latest && \
+
+# Install SDK and tools
+RUN mkdir -p /root/.android && touch /root/.android/repositories.cfg && \
+    mkdir -p /opt/android-sdk/cmdline-tools/latest && \
     cd /opt/android-sdk && \
     wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip && \
     unzip commandlinetools-linux-10406996_latest.zip -d /opt/android-sdk/cmdline-tools/latest && \
@@ -64,21 +87,20 @@ RUN mkdir -p /opt/android-sdk/cmdline-tools/latest && \
     rm -rf /opt/android-sdk/cmdline-tools/latest/cmdline-tools && \
     rm commandlinetools-linux-10406996_latest.zip && \
     chmod +x /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager && \
-    echo "AVD_DEVICE: ${AVD_DEVICE}" && \
-    API_LEVEL=${AVD_DEVICE#*_API_} && \
-    echo "Parsed API_LEVEL: $API_LEVEL" && \
-    mkdir -p /home/runner/.android && touch /home/runner/.android/repositories.cfg && \
-    cd $ANDROID_HOME/cmdline-tools/latest/bin && \
-yes | ./sdkmanager --sdk_root=$ANDROID_HOME --licenses && \
-./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "system-images;android-30;google_apis_playstore;x86" && \
-./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "build-tools;31.0.0" && \
-./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "platform-tools" && \
-./sdkmanager --sdk_root=${ANDROID_HOME} --verbose --channel=0 "emulator"
+    yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses && \
+    $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=${ANDROID_HOME} \
+        "system-images;android-30;google_apis_playstore;x86" \
+        "build-tools;31.0.0" \
+        "platform-tools" \
+        "emulator" && \
+        $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platforms;android-30" && \
+        chown -R root:root /opt/android-sdk && chmod -R 755 /opt/android-sdk && \
+        touch /root/.Xauthority && \
+        chmod 600 /root/.Xauthority        
+
 # set up VNC
 RUN mkdir ~/.vnc && echo "$VNC_PASSWORD" | vncpasswd -f > ~/.vnc/passwd && chmod 600 ~/.vnc/passwd
-
-# Entrypoint script
-WORKDIR ${ANDROID_HOME}/cmdline-tools/latest/bin
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
+WORKDIR "$ANDROID_HOME/cmdline-tools/latest/bin"
+COPY entrypoint.sh .
+RUN chmod +x "entrypoint.sh"
+ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
