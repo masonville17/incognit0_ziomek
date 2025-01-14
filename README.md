@@ -96,11 +96,5 @@ Incognit0_ziomek is good for a quick, persisted, and simple android virtualizati
 
 # Plans, Ideas:
 
-TODO: Grab split-tunnel setup from i2pvanish plus, supernet plus repo or rewrite.
-TODO: make the split-tunneling conditional so that users can alternatively just set up on cloud host that is already in different country.
-
-TODO: github compliance, license, contributions etc
-
-TODO: make 'get started' bash script to help less technically-inclined
 
 make this setup also a cloud-init-able image? perhaps one that only requires vnc password for remote installs
