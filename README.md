@@ -1,11 +1,16 @@
 # incognit0_ziomek
-### Cloud-Based Tiktok Ban Circumvention
+### Cloud-Based Android Development
 
-### Incognit0_ziomek is intended to circumvent the tiktok ban in a way that doesnt require you to modify your own phone.
+### Develop and Test Android Apps anywhere, from anywhere
+[![incognit0_ziomek](media/incognit0_ziomek.png)](https://github.com/masonville17/incognit0_ziomek)
 
 
 **ziomek translates directly to *compatriot* in Polish**
 ##### PROJECT STATE: *simple/rough working order*; 
+
+## Getting Started / Setup
+### Docker and Docker Compose
+
 
 [![incognit0_ziomek youtube](media/incognit0_ziomek.png)](https://www.youtube.com/shorts/781yoclzkcg)
 
