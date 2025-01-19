@@ -73,8 +73,8 @@ DISPLAY=:1 $ANDROID_HOME/emulator/emulator \
     -partition-size "${DISK_SIZE}" \
     -no-snapshot \
     -${ENABLE_AUDIO:+audio none} \
-    -network-speed "${NETWORK_SPEED}" \
-    -no-window -verbose &
+    -verbose &
+    # -no-window \
 emulator_pid=$!
 
 while true; do

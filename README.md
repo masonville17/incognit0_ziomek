@@ -1,11 +1,14 @@
 # incognit0_ziomek
-### Cloud-Based Android Development
+### Cloud-Based Android Development and Access-Control Circumvention for Authoritarian Governments
 
-### Develop and Test Android Apps anywhere, from anywhere
+**ziomek translates directly to *compatriot* in Polish**
+Only Authoritarian Governments ban Access to Apps/Information
+
+### Develop, Use, Test Android Apps anywhere, from anywhere
 [![incognit0_ziomek](media/incognit0_ziomek.png)](https://github.com/masonville17/incognit0_ziomek)
 
 
-**ziomek translates directly to *compatriot* in Polish**
+
 ##### PROJECT STATE: *simple/rough working order*; 
 
 ## Getting Started / Setup
