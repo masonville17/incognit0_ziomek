@@ -5,7 +5,6 @@ echo "ANDROID_HOME: $ANDROID_HOME"
 echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
 
 touch /root/.Xauthority /root/.Xsession /root/.xsession 
-xrdb -merge ~/.Xresources
 dbus-daemon --system --fork
 
 

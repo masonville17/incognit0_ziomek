@@ -80,8 +80,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
     ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
     mkdir -p /var/run/dbus && \
     echo $TZ > /etc/timezone
-RUN mkdir -p /root/.vnc && \
-cat <<EOF > /root/.vnc/xstartup
+RUN rm -rf /root/.vnc/xstartup && mkdir -p /root/.vnc && \
+    cat <<EOF > /root/.vnc/xstartup
 #!/bin/bash
 xrdb \$HOME/.Xresources
 i3 &
@@ -112,7 +112,6 @@ EXPOSE 5901 5900 5800 5899
 
 
 # set up VNC
-RUN mkdir ~/.vnc && echo "$VNC_PASSWORD" | vncpasswd -f > ~/.vnc/passwd && chmod 600 ~/.vnc/passwd
 WORKDIR "$ANDROID_HOME/cmdline-tools/latest/bin"
 COPY entrypoint.sh .
 RUN chmod +x "entrypoint.sh"

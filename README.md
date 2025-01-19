@@ -8,7 +8,7 @@ Only Authoritarian Governments ban Access to Apps/Information
 [![incognit0_ziomek](media/incognit0_ziomek.png)](https://github.com/masonville17/incognit0_ziomek)
 
 
-##### PROJECT STATE: *simple/rough working order if you can manage execing in and doing a few things. not polished*; 
+##### PROJECT STATE: *simple/rough DIY-WIP-able, not polished*; w
 
 ## Getting Started / Setup
 ### Docker and Docker Compose
