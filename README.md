@@ -13,7 +13,7 @@ Dockerized Android Emulation Over-VNC and with Split-Tunneled VPN Support
 ## Getting Started / Setup
 ### Docker and Docker Compose
 
-[![incognit0_ziomek youtube](media/incognit0_ziomek.png)](https://hub.docker.com/r/masonville17/incognit0_ziomek)
+[![incognit0_ziomek youtube](media/incognit0_ziomek.png)](https://github.com/masonville17/incognit0_ziomek)
 
 
 ## Getting Started / Setup
