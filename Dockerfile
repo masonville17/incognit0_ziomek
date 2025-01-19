@@ -63,6 +63,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
             openjdk-11-jdk \
             openjdk-17-jdk \
             wget \ 
+            xfonts-75dpi xfonts-100dpi xfonts-base \
+            x11-xserver-utils \
             dnsutils \
             ca-certificates \
             iptables \
