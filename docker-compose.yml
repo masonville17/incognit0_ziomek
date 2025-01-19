@@ -19,9 +19,6 @@ services:
       RAM_SIZE: 32768
       DISK_SIZE: 64
       ENABLE_AUDIO: true
-      ANDROID_SYS_LOCALE: en_IN
-      ANDROID_TIMEZONE: "Asia/Kolkata"
-      ANDROID_COUNTRY: "IN"
       OVPN_FILE: vpn_host.ovpn
     volumes:
       - ./incognito_data/avd-data:/root/.android/avd

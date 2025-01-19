@@ -3,9 +3,9 @@ set -e
 echo "Checking SDK installation..."
 echo "ANDROID_HOME: $ANDROID_HOME"
 echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
-rm -rf /run/dbus/dbus.pid /run/dbus/pid && sleep 10
+
 touch /root/.Xauthority /root/.Xsession /root/.xsession 
-dbus-daemon --system --fork
+rm -rf /run/dbus/dbus.pid && dbus-daemon --system --fork
 
 
 echo "What in the world is flying past my shoulder? Could it be? It's ziomek version $ZIOMEK_VERSION!"
@@ -53,9 +53,6 @@ vnc_pid=$!
 
 echo "Checking AVD directory at $ANDROID_AVD_HOME:"
 adb devices | grep emulator | cut -f1 | xargs -I {} adb -s {} emu kill
-adb shell setprop persist.sys.timezone "$ANDROID_TIMEZONE"
-adb shell stop
-adb shell start
 
 DISPLAY=:1 $ANDROID_HOME/emulator/emulator \
     -avd "${AVD_DEVICE}" \
@@ -65,16 +62,12 @@ DISPLAY=:1 $ANDROID_HOME/emulator/emulator \
     -memory "${RAM_SIZE}" \
     -partition-size "${DISK_SIZE}" \
     -no-snapshot \
-    -prop persist.sys.locale="${ANDROID_SYS_LOCALE}" \
-    -prop persist.sys.timezone="${ANDROID_TIMEZONE}" \
-    -prop persist.radio.country="${ANDROID_COUNTRY}"    
     -${ENABLE_AUDIO:+audio none} \
     -verbose &
     # -no-window \
 emulator_pid=$!
-sleep 10
+
 while true; do
-    # wmctrl -r "Android Emulator" -b add,fullscreen
     ip_addr=$(curl -s https://ipinfo.io/ip)
     if [[ "${USE_VPN}" -eq 1 ]]; then
         if ! ip a show tun0 up > /dev/null 2>&1; then
@@ -94,5 +87,4 @@ while true; do
     sleep 600
 done
 trap "kill $vpn_pid" EXIT
-
 

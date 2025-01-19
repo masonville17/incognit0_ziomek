@@ -1,6 +1,6 @@
 # incognit0_ziomek
-### Cloud-Based Android Development and Governments Access-Control Circumvention (for tiktok)
-Dockerized Android Emulation Over-VNC and with Split-Tunneled VPN Support
+
+## Dockerized Android Emulation Over-VNC and with Split-Tunneled VPN Support for Android Development or Accessing/Testing Apps Not Available in All Regions 
 
 **ziomek translates directly to *compatriot* in Polish**
 

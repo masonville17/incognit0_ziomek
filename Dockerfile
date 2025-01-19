@@ -31,18 +31,15 @@ ARG ENABLE_AUDIO=true
 ENV ENABLE_AUDIO=${ENABLE_AUDIO}
 ARG ENABLE_HARDWARE_KEYBOARD=true
 ENV ENABLE_HARDWARE_KEYBOARD=${ENABLE_HARDWARE_KEYBOARD}
+ARG NETWORK_SPEED=full
+ENV NETWORK_SPEED=${NETWORK_SPEED}
 ENV VNC_PASSWORD=password
 
 # VNC and Timezone.
 ENV VNC_PASSWORD=${VNC_PASSWORD}
+ARG TZ="$AVD_DEVICE"
+ENV TZ=${AVD_DEVICE}
 
-ARG ANDROID_SYS_LOCALE="en_IN"
-ENV ANDROID_SYS_LOCALE=${ANDROID_SYS_LOCALE}
-ARG ANDROID_TIMEZONE="Asia/Kolkata"
-ENV ANDROID_TIMEZONE=${ANDROID_TIMEZONE}
-ARG ANDROID_COUNTRY="IN"
-ENV ANDROID_COUNTRY=${ANDROID_COUNTRY}
-ENV TZ=${ANDROID_TIMEZONE}
 
 # Install Android SDK components
 
@@ -59,7 +56,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
             wget \
             curl \
             bash \
-            wmctrl \
             xvfb \
             sudo \
             procps \
@@ -118,6 +114,5 @@ EXPOSE 5901 5900 5800 5899
 # set up VNC
 WORKDIR "$ANDROID_HOME/cmdline-tools/latest/bin"
 COPY entrypoint.sh .
-RUN chmod +x "entrypoint.sh" && \
-        rm -rf /run/dbus/dbus.pid /run/dbus/pid
+RUN chmod +x "entrypoint.sh"
 ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
