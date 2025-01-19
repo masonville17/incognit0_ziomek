@@ -3,7 +3,6 @@
 Dockerized Android Emulation Over-VNC and with Split-Tunneled VPN Support
 
 **ziomek translates directly to *compatriot* in Polish**
-Only Authoritarian Governments ban Access to Apps/Information
 
 ### Develop, Use, Test Android Apps anywhere, from anywhere, (as if you were anywhere)
 [![incognit0_ziomek](media/android-playstore.png)](https://hub.docker.com/r/masonville17/incognit0_ziomek)
