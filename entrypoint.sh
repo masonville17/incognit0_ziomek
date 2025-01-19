@@ -53,6 +53,10 @@ vnc_pid=$!
 
 echo "Checking AVD directory at $ANDROID_AVD_HOME:"
 adb devices | grep emulator | cut -f1 | xargs -I {} adb -s {} emu kill
+adb shell setprop persist.sys.timezone "America/New_York"
+adb shell stop
+adb shell start
+
 
 DISPLAY=:1 $ANDROID_HOME/emulator/emulator \
     -avd "${AVD_DEVICE}" \
@@ -62,6 +66,9 @@ DISPLAY=:1 $ANDROID_HOME/emulator/emulator \
     -memory "${RAM_SIZE}" \
     -partition-size "${DISK_SIZE}" \
     -no-snapshot \
+    -prop persist.sys.locale="${ANDROID_SYS_LOCALE}" \
+    -prop persist.sys.timezone="${ANDROID_TIMEZONE}" \
+    -prop persist.radio.country="${ANDROID_COUNTRY}"    
     -${ENABLE_AUDIO:+audio none} \
     -verbose &
     # -no-window \
