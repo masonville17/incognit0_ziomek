@@ -59,6 +59,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
             wget \
             curl \
             bash \
+            wmctrl \
             xvfb \
             sudo \
             procps \
@@ -117,5 +118,6 @@ EXPOSE 5901 5900 5800 5899
 # set up VNC
 WORKDIR "$ANDROID_HOME/cmdline-tools/latest/bin"
 COPY entrypoint.sh .
-RUN chmod +x "entrypoint.sh"
+RUN chmod +x "entrypoint.sh" && \
+        rm -rf /run/dbus/dbus.pid /run/dbus/pid
 ENTRYPOINT ["/bin/bash", "entrypoint.sh"]

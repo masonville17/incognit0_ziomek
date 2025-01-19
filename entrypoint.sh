@@ -3,7 +3,7 @@ set -e
 echo "Checking SDK installation..."
 echo "ANDROID_HOME: $ANDROID_HOME"
 echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
-rm -rf /run/dbus/dbus.pid && sleep 10
+rm -rf /run/dbus/dbus.pid /run/dbus/pid && sleep 10
 touch /root/.Xauthority /root/.Xsession /root/.xsession 
 dbus-daemon --system --fork
 
@@ -64,6 +64,7 @@ DISPLAY=:1 $ANDROID_HOME/emulator/emulator \
     -cores "${CPU_CORES}" \
     -memory "${RAM_SIZE}" \
     -partition-size "${DISK_SIZE}" \
+    -scale 1.0 \
     -no-snapshot \
     -prop persist.sys.locale="${ANDROID_SYS_LOCALE}" \
     -prop persist.sys.timezone="${ANDROID_TIMEZONE}" \
@@ -72,8 +73,9 @@ DISPLAY=:1 $ANDROID_HOME/emulator/emulator \
     -verbose &
     # -no-window \
 emulator_pid=$!
-
+sleep 10
 while true; do
+    wmctrl -r "Android Emulator" -b add,fullscreen
     ip_addr=$(curl -s https://ipinfo.io/ip)
     if [[ "${USE_VPN}" -eq 1 ]]; then
         if ! ip a show tun0 up > /dev/null 2>&1; then
