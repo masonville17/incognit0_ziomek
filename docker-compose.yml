@@ -16,7 +16,7 @@ services:
       EMULATOR_DENSITY: 240
       AVD_DEVICE: Pixel_4_API_30_google_apis_playstore_x86_64
       CPU_CORES: 4
-      RAM_SIZE: 65536
+      RAM_SIZE: 32768
       DISK_SIZE: 64
       ENABLE_AUDIO: true
       OVPN_FILE: vpn_host.ovpn

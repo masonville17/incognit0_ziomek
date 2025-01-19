@@ -5,7 +5,7 @@ echo "ANDROID_HOME: $ANDROID_HOME"
 echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
 
 touch /root/.Xauthority /root/.Xsession /root/.xsession 
-dbus-daemon --system --fork
+rm -rf /run/dbus/dbus.pid && dbus-daemon --system --fork
 
 
 echo "What in the world is flying past my shoulder? Could it be? It's ziomek version $ZIOMEK_VERSION!"
@@ -52,15 +52,7 @@ tightvncserver :1  -geometry $EMULATOR_RESOLUTION -depth 24 &
 vnc_pid=$!
 
 echo "Checking AVD directory at $ANDROID_AVD_HOME:"
-
-if [ ! -f "$ANDROID_AVD_HOME/${AVD_DEVICE}.ini" ]; then \
-    echo "AVD ${AVD_DEVICE} not found. Creating AVD..."; \
-    /opt/android-sdk/cmdline-tools/latest/bin/avdmanager create avd \
-        --name "${AVD_DEVICE}" \
-        --package "system-images;android-30;google_apis_playstore;x86" \
-        --device "pixel_4" \
-        --force; \
-fi
+adb devices | grep emulator | cut -f1 | xargs -I {} adb -s {} emu kill
 
 DISPLAY=:1 $ANDROID_HOME/emulator/emulator \
     -avd "${AVD_DEVICE}" \

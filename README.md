@@ -1,20 +1,21 @@
 # incognit0_ziomek
-### Cloud-Based Android Development and Governments Access-Control Circumvention
+### Cloud-Based Android Development and Governments Access-Control Circumvention (for tiktok)
+Dockerized Android Emulation Over-VNC and with Split-Tunneled VPN Support
 
 **ziomek translates directly to *compatriot* in Polish**
 Only Authoritarian Governments ban Access to Apps/Information
 
-### Develop, Use, Test Android Apps anywhere, from anywhere
-[![incognit0_ziomek](media/incognit0_ziomek.png)](https://github.com/masonville17/incognit0_ziomek)
+### Develop, Use, Test Android Apps anywhere, from anywhere, (as if you were anywhere)
+[![incognit0_ziomek](media/android-playstore.png)](https://hub.docker.com/r/masonville17/incognit0_ziomek)
 
 
-##### PROJECT STATE: *simple/rough DIY-WIP-able, not polished*; w
+##### PROJECT STATE: **working, not perfect, but does the job**
 
 ## Getting Started / Setup
 ### Docker and Docker Compose
 
+[![incognit0_ziomek youtube](media/incognit0_ziomek.png)](https://hub.docker.com/r/masonville17/incognit0_ziomek)
 
-[![incognit0_ziomek youtube](media/incognit0_ziomek.png)](https://www.youtube.com/shorts/781yoclzkcg)
 
 ## Getting Started / Setup
 ### Docker and Docker Compose
