@@ -72,13 +72,21 @@ RUN DEBIAN_FRONTEND=noninteractive \
             unzip \
             openvpn \
             qemu-kvm \
+            xterm xorg i3 x11-apps dbus dbus-x11 \
             libvirt-daemon-system \
             libvirt-clients \
             tightvncserver \
             unzip && \
     ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
+    mkdir -p /var/run/dbus && \
     echo $TZ > /etc/timezone
-
+RUN mkdir -p /root/.vnc && \
+cat <<EOF > /root/.vnc/xstartup
+#!/bin/bash
+xrdb \$HOME/.Xresources
+i3 &
+EOF
+RUN chmod +x /root/.vnc/xstartup
 # Install SDK and tools
 RUN mkdir -p /root/.android && touch /root/.android/repositories.cfg && \
     mkdir -p /opt/android-sdk/cmdline-tools/latest && \
@@ -99,6 +107,9 @@ RUN mkdir -p /root/.android && touch /root/.android/repositories.cfg && \
         chown -R root:root /opt/android-sdk && chmod -R 755 /opt/android-sdk && \
         touch /root/.Xauthority && \
         chmod 600 /root/.Xauthority        
+
+EXPOSE 5901 5900 5800 5899
+
 
 # set up VNC
 RUN mkdir ~/.vnc && echo "$VNC_PASSWORD" | vncpasswd -f > ~/.vnc/passwd && chmod 600 ~/.vnc/passwd

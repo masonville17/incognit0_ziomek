@@ -1,5 +1,5 @@
 # incognit0_ziomek
-### Cloud-Based Android Development and Access-Control Circumvention for Authoritarian Governments
+### Cloud-Based Android Development and Governments Access-Control Circumvention
 
 **ziomek translates directly to *compatriot* in Polish**
 Only Authoritarian Governments ban Access to Apps/Information
@@ -8,8 +8,7 @@ Only Authoritarian Governments ban Access to Apps/Information
 [![incognit0_ziomek](media/incognit0_ziomek.png)](https://github.com/masonville17/incognit0_ziomek)
 
 
-
-##### PROJECT STATE: *simple/rough working order*; 
+##### PROJECT STATE: *simple/rough working order if you can manage execing in and doing a few things. not polished*; 
 
 ## Getting Started / Setup
 ### Docker and Docker Compose

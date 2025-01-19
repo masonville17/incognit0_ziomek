@@ -3,12 +3,11 @@ set -e
 echo "Checking SDK installation..."
 echo "ANDROID_HOME: $ANDROID_HOME"
 echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
-set -e
 
-if [ ! -f "/root/.Xauthority" ]; then
-    touch /root/.Xauthority
-    echo "Created missing /root/.Xauthority"
-fi
+touch /root/.Xauthority /root/.Xsession /root/.xsession 
+xrdb -merge ~/.Xresources
+dbus-daemon --system --fork
+
 
 echo "What in the world is flying past my shoulder? Could it be? It's ziomek version $ZIOMEK_VERSION!"
 initial_ipv4=$(ip -4 a show scope global | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | head -n 1)
@@ -50,7 +49,7 @@ mkdir -p ~/.vnc
 echo "${VNC_PASSWORD:-password}" | vncpasswd -f > ~/.vnc/passwd
 chmod 600 ~/.vnc/passwd
 export DISPLAY=:1
-tightvncserver :1 &
+tightvncserver :1  -geometry $EMULATOR_RESOLUTION -depth 24 &
 vnc_pid=$!
 
 echo "Checking AVD directory at $ANDROID_AVD_HOME:"
