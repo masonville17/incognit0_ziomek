@@ -20,7 +20,6 @@ services:
       DISK_SIZE: 64
       ENABLE_AUDIO: true
       OVPN_FILE: vpn_host.ovpn
-      NETWORK_SPEED: full
     volumes:
       - ./incognito_data/avd-data:/root/.android/avd
       - ./incognito_data/device-data:/data
@@ -31,8 +30,5 @@ services:
     privileged: true
     restart: always
     ports:
-      - 5800:5800
-      - 5555:5555
-      - 5999:5999
-      - 5900:5900
+      - 5901:5901
     # network_mode: host
