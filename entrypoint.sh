@@ -3,9 +3,9 @@ set -e
 echo "Checking SDK installation..."
 echo "ANDROID_HOME: $ANDROID_HOME"
 echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
-
+rm -rf /run/dbus/dbus.pid && sleep 10
 touch /root/.Xauthority /root/.Xsession /root/.xsession 
-rm -rf /run/dbus/dbus.pid && dbus-daemon --system --fork
+dbus-daemon --system --fork
 
 
 echo "What in the world is flying past my shoulder? Could it be? It's ziomek version $ZIOMEK_VERSION!"
@@ -53,10 +53,9 @@ vnc_pid=$!
 
 echo "Checking AVD directory at $ANDROID_AVD_HOME:"
 adb devices | grep emulator | cut -f1 | xargs -I {} adb -s {} emu kill
-adb shell setprop persist.sys.timezone "America/New_York"
+adb shell setprop persist.sys.timezone "$ANDROID_TIMEZONE"
 adb shell stop
 adb shell start
-
 
 DISPLAY=:1 $ANDROID_HOME/emulator/emulator \
     -avd "${AVD_DEVICE}" \
