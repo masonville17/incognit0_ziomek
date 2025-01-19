@@ -9,4 +9,3 @@ ovpn_host.ovpn
 vpn/*
 !vpn/*.example
 vpn/passfile
-incognito_data
